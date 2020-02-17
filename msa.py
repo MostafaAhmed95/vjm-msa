@@ -71,7 +71,7 @@ def create_row(l_t):
 
 #function for stacking the row
 def mat_stack(x):
-    np.hstack((k_after_reduction,x))
+    np.vstack((k_after_reduction,x))
 
 #the boundry conditions
 
@@ -97,4 +97,16 @@ r_12=[(15,A_r),(16,-A_r)]
 r_13=[(0,A_p),(1,A_p)] #w0
 r_14=[(0,A_p),(1,A_p)] #w1
 
-#
+#append all my rows into a list
+r=[r_1,r_2,r_3,r_4,r_5,r_6,r_7,r_8,r_9,r_10,r_11,r_12,r_13,r_14]
+for i in r:
+    mat_stack(create_row(i))
+
+#split the stiffenes matrix to get my A,B,C,D
+A=k_after_reduction[0:113,0:113]
+B=k_after_reduction[0:113,113]
+C=k_after_reduction[113,0:113]
+D=k_after_reduction[113,113]
+
+# calculate our Kc
+K_c= D - C @ np.linalg.inv(A) @ B
